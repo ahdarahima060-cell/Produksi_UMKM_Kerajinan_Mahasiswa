@@ -111,6 +111,19 @@
             font-size: 13px;
             line-height: 1.5;
         }
+        
+        .alert-success {
+            border-color: #b7dfbf;
+            background: #e8f5e9;
+            color: #256b3b;
+        }
+
+        .alert-error {
+            border-color: #f0d4d1;
+            background: #fff5f4;
+            color: #9b2c25;
+        }
+
         .submit-button {
             width: 100%;
             min-height: 48px;

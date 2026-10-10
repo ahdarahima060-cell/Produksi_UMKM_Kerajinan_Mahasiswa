@@ -35,10 +35,10 @@ class AuthController extends Controller
             'password' => $validated['password'],
         ]);
 
-        Auth::login($user);
-        $request->session()->regenerate();
 
-        return to_route('user.dashboard');
+            return to_route('login')
+                ->with('success', 'Registrasi berhasil! Silakan login menggunakan akun kamu.');
+
     }
 
     public function login(Request $request): RedirectResponse

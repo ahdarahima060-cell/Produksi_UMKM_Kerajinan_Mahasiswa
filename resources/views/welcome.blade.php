@@ -443,7 +443,12 @@
     <div class="container">
 
         <header>
-            <a class="brand" href="{{ url('/') }}">Ruang Karya</a>
+            <a class="brand" href="{{ url('/') }}">
+                <span class="brand-mark">
+                    <i class="fa-solid fa-leaf"></i>
+                </span>
+                UMKM Kerajinan Mahasiswa
+            </a>
 
             <nav aria-label="Navigasi akun">
                 <a href="{{ route('login') }}">Masuk</a>

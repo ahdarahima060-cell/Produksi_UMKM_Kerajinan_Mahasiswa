@@ -1,3 +1,4 @@
+
 @extends('layouts.auth')
 
 @section('title', 'Masuk')
@@ -7,8 +8,22 @@
     <h1>Masuk ke akun</h1>
     <p class="form-intro">Masukkan email dan kata sandi untuk melanjutkan.</p>
 
+    @if (session('success'))
+        <div class="alert alert-success" role="status">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-error" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     @if ($errors->any())
-        <div class="alert" role="alert">{{ $errors->first() }}</div>
+        <div class="alert alert-error" role="alert">
+            {{ $errors->first() }}
+        </div>
     @endif
 
     <form method="POST" action="{{ route('login.store') }}">
