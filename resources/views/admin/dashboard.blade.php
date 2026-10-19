@@ -1,16 +1,16 @@
-```blade
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin | Ruang Karya</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+        rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-          rel="stylesheet">
+        rel="stylesheet">
 
     <style>
         :root {
@@ -231,27 +231,30 @@
         <div class="menu-label">MENU UTAMA</div>
 
         <a href="{{ route('admin.dashboard') }}"
-           class="menu-link active">
+            class="menu-link active">
             <i class="fa-solid fa-house"></i>
             Dashboard
         </a>
 
         <div class="menu-label">PENGELOLAAN UMKM</div>
 
-        <div class="menu-link">
+
+        <a href="{{ route('admin.produk.index') }}"
+            class="menu-link">
             <i class="fa-solid fa-box"></i>
             Kelola Produk
-        </div>
+        </a>
+
 
         <div class="menu-link">
             <i class="fa-solid fa-cart-shopping"></i>
             Proses Pesanan
         </div>
 
-        <div class="menu-link">
+        <a href="{{ route('admin.produksi.index') }}" class="menu-link">
             <i class="fa-solid fa-hammer"></i>
             Pencatatan Produksi & Penjualan
-        </div>
+        </a>
 
         <div class="menu-link">
             <i class="fa-solid fa-boxes-stacked"></i>
@@ -295,17 +298,22 @@
 
         <div class="row g-3">
 
+
             <div class="col-md-6 col-xl-3">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fa-solid fa-box"></i>
+                <a href="{{ route('admin.produk.index') }}"
+                    class="text-decoration-none text-dark">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+                        <h3>Kelola Produk</h3>
+                        <p>
+                            Mengelola informasi produk kerajinan, harga, dan data produk.
+                        </p>
                     </div>
-                    <h3>Kelola Produk</h3>
-                    <p>
-                        Mengelola informasi produk kerajinan, harga, dan data produk.
-                    </p>
-                </div>
+                </a>
             </div>
+
 
             <div class="col-md-6 col-xl-3">
                 <div class="feature-card">
@@ -358,5 +366,5 @@
     </main>
 
 </body>
+
 </html>
-```

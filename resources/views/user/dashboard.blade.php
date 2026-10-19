@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -132,6 +132,7 @@
             border-radius: 14px;
             background: #e1e8dc;
         }
+
         .hero-art img {
             width: 100%;
             height: 100%;
@@ -550,79 +551,12 @@
 
 <body>
 
-    @php
-        $products = [
-            [
-                'name' => 'Gelang Manik',
-                'price' => 15000,
-                'stock' => 15,
-                'category' => 'Aksesoris',
-                'image' => 'gelang-manik.png',
-                'description' => 'Gelang handmade dari manik-manik dengan kombinasi warna yang menarik.'
-            ],
-            [
-                'name' => 'Gantungan Kunci Manik',
-                'price' => 10000,
-                'stock' => 20,
-                'category' => 'Aksesoris',
-                'image' => 'gantungan-kunci-manik.png',
-                'description' => 'Gantungan kunci buatan tangan yang cocok untuk aksesori tas atau kunci.'
-            ],
-            [
-                'name' => 'Tote Bag Handmade',
-                'price' => 35000,
-                'stock' => 8,
-                'category' => 'Tas',
-                'image' => 'Tote-Bag-Handmade.jpeg',
-                'description' => 'Tas kain sederhana yang cocok digunakan untuk kuliah dan aktivitas sehari-hari.'
-            ],
-            [
-                'name' => 'Buket Kertas',
-                'price' => 25000,
-                'stock' => 12,
-                'category' => 'Hiasan',
-                'image' => 'bucket-bunga-kertas.jpg',
-                'description' => 'Buket bunga dari kertas yang dibuat secara handmade sebagai hadiah.'
-            ],
-            [
-                'name' => 'Hiasan Dinding',
-                'price' => 30000,
-                'stock' => 10,
-                'category' => 'Hiasan',
-                'image' => 'hiasan-dinding.jpg',
-                'description' => 'Hiasan dinding buatan tangan untuk mempercantik ruang.'
-            ],
-            [
-                'name' => 'Tempat Pensil Rajut',
-                'price' => 20000,
-                'stock' => 14,
-                'category' => 'Rajut',
-                'image' => 'tempat-pensil.jpeg',
-                'description' => 'Tempat alat tulis dengan tampilan rajut yang unik dan menarik.'
-            ],
-            [
-                'name' => 'Bookmark Rajut',
-                'price' => 8000,
-                'stock' => 18,
-                'category' => 'Rajut',
-                'image' => 'bookmark.jpeg',
-                'description' => 'Pembatas buku handmade untuk menemani kegiatan membaca.'
-            ],
-            [
-                'name' => 'Strap HP Manik',
-                'price' => 12000,
-                'stock' => 16,
-                'category' => 'Aksesoris',
-                'image' => 'Strap-HP-Manik-Manik.jpeg',
-                'description' => 'Strap HP dengan manik-manik warna-warni sebagai aksesori ponsel.'
-            ],
-        ];
-    @endphp
+
 
     <header class="navbar">
         <a href="{{ route('user.dashboard') }}" class="brand">
             <span class="brand-mark">
-                 <i class="fa-solid fa-leaf"></i>
+                <i class="fa-solid fa-leaf"></i>
             </span>
             <span>UMKM Kerajinan Mahasiswa</span>
         </a>
@@ -660,8 +594,7 @@
             <div class="hero-art">
                 <img
                     src="{{ asset('images/products/banner-kerajinan.jpg') }}"
-                    alt="Kerajinan tangan mahasiswa"
-                >
+                    alt="Kerajinan tangan mahasiswa">
             </div>
         </section>
 
@@ -697,7 +630,7 @@
                 <div class="catalog-heading">
                     <h2>Semua Produk</h2>
                     <span class="product-count" id="productCount">
-                        Menampilkan {{ count($products) }} produk
+                        Menampilkan {{ $products->count() }} produk
                     </span>
                 </div>
 
@@ -706,57 +639,57 @@
                     id="searchProduct"
                     class="search-box"
                     placeholder="Cari nama produk kerajinan..."
-                    aria-label="Cari produk"
-                >
+                    aria-label="Cari produk">
 
                 <div class="product-grid" id="productGrid">
 
                     @foreach ($products as $product)
-                        <article
-                            class="product-card"
-                            data-name="{{ strtolower($product['name']) }}"
-                            data-category="{{ $product['category'] }}"
-                        >
-                            <img
-                                class="product-image"
-                                src="{{ asset('images/products/' . $product['image']) }}"
-                                alt="{{ $product['name'] }}"
-                                loading="lazy"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-                            >
+                    <article
+                        class="product-card"
+                        data-name="{{ strtolower($product->nama_produk) }}"
+                        data-category="{{ $product->kategori }}">
+                        <img
+                            class="product-image"
+                            src="{{ $product->gambar ? asset('storage/' . $product->gambar) : '' }}"
+                            alt="{{ $product->nama_produk }}"
+                            loading="lazy"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
 
-                            <div class="image-placeholder">
-                                {{ $product['name'] }}
-                            </div>
+                        <div class="image-placeholder">
+                            {{ $product->nama_produk }}
+                        </div>
 
-                            <div class="product-info">
-                                <p class="product-category">
-                                    {{ $product['category'] }}
-                                </p>
+                        <div class="product-info">
+                            <p class="product-category">
+                                {{ $product->kategori }}
+                            </p>
 
-                                <h3 class="product-name">
-                                    {{ $product['name'] }}
-                                </h3>
+                            <h3 class="product-name">
+                                {{ $product->nama_produk }}
+                            </h3>
 
-                                <p class="product-price">
-                                    Rp {{ number_format($product['price'], 0, ',', '.') }}
-                                </p>
+                            <p class="product-price">
+                                Rp {{ number_format($product->harga, 0, ',', '.') }}
+                            </p>
 
+                            <span class="stock-label">
+                                Stok: {{ $product->stok }}
+                            </span>
 
-                                <button
-                                    type="button"
-                                    
-                                    data-name="{{ $product['name'] }}"
-                                    data-price="{{ $product['price'] }}"
-                                    data-stock="{{ $product['stock'] }}"
-                                    data-category="{{ $product['category'] }}"
-                                    data-image="{{ asset('images/products/' . $product['image']) }}"
-                                    data-description="{{ $product['description'] }}"
-                                    
-                                >
-                                </button>
-                            </div>
-                        </article>
+                            <button
+                                type="button"
+                                class="detail-button"
+                                onclick="showProductDetail(this)"
+                                data-name="{{ $product->nama_produk }}"
+                                data-price="{{ $product->harga }}"
+                                data-stock="{{ $product->stok }}"
+                                data-category="{{ $product->kategori }}"
+                                data-image="{{ $product->gambar ? asset('storage/' . $product->gambar) : '' }}"
+                                data-description="{{ $product->deskripsi ?? 'Produk kerajinan mahasiswa.' }}">
+                                Lihat Detail
+                            </button>
+                        </div>
+                    </article>
                     @endforeach
 
                     <div class="empty-state" id="emptyState">
@@ -771,10 +704,10 @@
         <section id="tentang" style="margin-top: 40px; text-align: center;">
             <h2 style="color: var(--green);">Tentang Ruang Karya</h2>
             <p style="color: var(--muted); line-height: 1.8;">
-                Ruang Karya merupakan platform yang memperkenalkan berbagai produk kerajinan hasil kreativitas mahasiswa. 
+                Ruang Karya merupakan platform yang memperkenalkan berbagai produk kerajinan hasil kreativitas mahasiswa.
                 Kami hadir sebagai wadah untuk menampilkan karya buatan tangan yang memiliki nilai kreativitas, keunikan, dan manfaat.
-                Melalui Ruang Karya, pengunjung dapat mengenal berbagai kerajinan mahasiswa, mulai dari aksesori manik-manik, produk rajutan, 
-                tas handmade, hingga hiasan dekoratif. Kami berharap setiap karya dapat menjadi langkah kecil untuk mengembangkan kreativitas 
+                Melalui Ruang Karya, pengunjung dapat mengenal berbagai kerajinan mahasiswa, mulai dari aksesori manik-manik, produk rajutan,
+                tas handmade, hingga hiasan dekoratif. Kami berharap setiap karya dapat menjadi langkah kecil untuk mengembangkan kreativitas
                 dan semangat kewirausahaan mahasiswa.
             </p>
         </section>
@@ -792,8 +725,7 @@
                 type="button"
                 class="close-button"
                 onclick="closeProductDetail()"
-                aria-label="Tutup detail"
-            >
+                aria-label="Tutup detail">
                 &times;
             </button>
 
@@ -813,8 +745,7 @@
                 <button
                     type="button"
                     class="detail-button"
-                    onclick="closeProductDetail()"
-                >
+                    onclick="closeProductDetail()">
                     Kembali ke Produk
                 </button>
             </div>
@@ -897,7 +828,7 @@
             image.alt = button.dataset.name;
             image.style.display = 'block';
 
-            image.onerror = function () {
+            image.onerror = function() {
                 this.style.display = 'none';
             };
 
@@ -926,4 +857,5 @@
     </script>
 
 </body>
+
 </html>
