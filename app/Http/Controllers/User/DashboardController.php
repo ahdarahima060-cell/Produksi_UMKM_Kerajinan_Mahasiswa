@@ -13,4 +13,9 @@ class DashboardController extends Controller
 
         return view('user.dashboard', compact('products'));
     }
+
+    public function showProduk(Produk $produk)
+    {
+        return view('user.produk.show', compact('produk'));
+    }
 }

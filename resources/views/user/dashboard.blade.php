@@ -678,7 +678,9 @@
 
                             <button
                                 type="button"
+
                                 class="detail-button"
+                                
                                 onclick="showProductDetail(this)"
                                 data-name="{{ $product->nama_produk }}"
                                 data-price="{{ $product->harga }}"

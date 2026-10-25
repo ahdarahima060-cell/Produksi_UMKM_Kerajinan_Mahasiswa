@@ -62,3 +62,5 @@ Route::prefix('user')
             ->name('dashboard');
     });
     
+Route::get('/produk/{produk}', [DashboardController::class, 'showProduk'])
+    ->name('produk.show');
