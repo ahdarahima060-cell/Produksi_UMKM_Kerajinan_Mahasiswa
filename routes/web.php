@@ -53,14 +53,26 @@ Route::prefix('admin')
     });
 
 
-// Dashboard user
+
+ // Dashboard user
 Route::prefix('user')
     ->name('user.')
     ->middleware(['auth', 'role:user'])
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
+
+        // Keranjang Belanja
+        Route::get('/keranjang', [
+            \App\Http\Controllers\User\KeranjangController::class,
+            'index'
+        ])->name('keranjang.index');
+
+        Route::post('/keranjang', [
+            \App\Http\Controllers\User\KeranjangController::class,
+            'store'
+        ])->name('keranjang.store');
     });
-    
+
 Route::get('/produk/{produk}', [DashboardController::class, 'showProduk'])
     ->name('produk.show');
