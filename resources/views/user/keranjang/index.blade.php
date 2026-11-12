@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -428,102 +428,127 @@
         }
     </style>
 </head>
+
 <body>
+    <!-- ================= TAMBAHAN HEADER BARU ================= -->
+    <header class="topbar">
+        <a href="{{ route('user.dashboard') }}" class="brand">
+            <span class="brand-icon">
+                <i class="fa-solid fa-leaf"></i>
+            </span>
+            <span>Ruang Karya</span>
+        </a>
 
-<header class="topbar">
-    <a href="{{ route('user.dashboard') }}" class="brand">
-        <span class="brand-icon">
-            <i class="fa-solid fa-leaf"></i>
-        </span>
-        <span>Ruang Karya</span>
-    </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('user.dashboard') }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali Belanja
+            </a>
 
-    <a href="{{ route('user.dashboard') }}" class="back-link">
-        <i class="fa-solid fa-arrow-left"></i>
-        Kembali Belanja
-    </a>
-</header>
-
-<main class="page">
-    <div class="page-heading">
-        <div class="heading-title">
-            <div class="heading-icon">
-                <i class="fa-solid fa-cart-shopping"></i>
-            </div>
-            <div>
-                <h1>Keranjang Belanja</h1>
-                <p>Periksa kembali produk pilihanmu sebelum melanjutkan.</p>
-            </div>
+            <a href="{{ url('/') }}" class="back-link" style="background-color: var(--green); color: white; border-color: var(--green);">
+                <i class="fa-solid fa-house"></i>
+                Beranda
+            </a>
         </div>
+    </header>
+    <!-- ======================================================== -->
 
-        @if (count($keranjang) > 0)
+    <main class="page">
+        <div class="page-heading">
+            <div class="heading-title">
+                <div class="heading-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <div>
+                    <h1>Keranjang Belanja</h1>
+                    <p>Periksa kembali produk pilihanmu sebelum melanjutkan.</p>
+                </div>
+            </div>
+
+            @if (count($keranjang) > 0)
             <span class="cart-count">
                 <i class="fa-solid fa-bag-shopping"></i>
                 {{ collect($keranjang)->sum('jumlah') }} barang dipilih
             </span>
-        @endif
-    </div>
+            @endif
+        </div>
 
-    @if (session('success'))
+        @if (session('success'))
         <div class="alert alert-success mb-4">{{ session('success') }}</div>
-    @endif
+        @endif
 
-    @if (session('error'))
+        @if (session('error'))
         <div class="alert alert-danger mb-4">{{ session('error') }}</div>
-    @endif
+        @endif
 
-    @if ($errors->any())
+        @if ($errors->any())
         <div class="alert alert-danger mb-4">{{ $errors->first() }}</div>
-    @endif
+        @endif
 
-    @php
+        @php
         $total = 0;
-    @endphp
+        @endphp
 
-    @if (count($keranjang) > 0)
+        @if (count($keranjang) > 0)
         <div class="cart-layout">
             <section>
                 <h2 class="section-label">Produk pilihanmu</h2>
 
+                <!-- TAMBAHKAN INI -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="selectAll" checked>
+                    <label class="form-check-label fw-bold" for="selectAll" style="cursor: pointer;">
+                        Pilih Semua Produk
+                    </label>
+                </div>
+
                 <div class="product-list">
                     @foreach ($keranjang as $item)
-                        @php
-                            $subtotal = $item['harga'] * $item['jumlah'];
-                            $total += $subtotal;
-                        @endphp
+                    @php
+                    $subtotal = $item['harga'] * $item['jumlah'];
+                    $total += $subtotal;
+                    @endphp
 
-                        <article class="product-card">
-                            @if (!empty($item['gambar']))
-                                <img
-                                    src="{{ asset('storage/' . $item['gambar']) }}"
-                                    alt="{{ $item['nama_produk'] }}"
-                                    class="product-image"
-                                >
-                            @else
-                                <div class="product-image image-placeholder">
-                                    <i class="fa-regular fa-image"></i>
-                                </div>
-                            @endif
+                    <article class="product-card">
+                        <!-- TAMBAHKAN CHECKBOX INI -->
+                        <div class="me-2">
+                            <input type="checkbox" class="form-check-input item-checkbox"
+                                value="{{ $item['produk_id'] }}"
+                                data-harga="{{ $item['harga'] }}"
+                                data-jumlah="{{ $item['jumlah'] }}"
+                                checked style="width: 20px; height: 20px; cursor: pointer;">
+                        </div>
+                        <!-- Sisa kode gambar dan info produk... -->
+                        @if (!empty($item['gambar']))
+                        <img
+                            src="{{ asset('storage/' . $item['gambar']) }}"
+                            alt="{{ $item['nama_produk'] }}"
+                            class="product-image">
+                        @else
+                        <div class="product-image image-placeholder">
+                            <i class="fa-regular fa-image"></i>
+                        </div>
+                        @endif
 
-                            <div class="product-info">
-                                <div class="product-category">Produk kerajinan mahasiswa</div>
-                                <h3 class="product-name">{{ $item['nama_produk'] }}</h3>
+                        <div class="product-info">
+                            <div class="product-category">Produk kerajinan mahasiswa</div>
+                            <h3 class="product-name">{{ $item['nama_produk'] }}</h3>
 
-                                <div class="product-price">
-                                    Rp {{ number_format($item['harga'], 0, ',', '.') }}
-                                </div>
-
-                                <span class="quantity-info">
-                                    <i class="fa-solid fa-box"></i>
-                                    Jumlah: {{ $item['jumlah'] }}
-                                </span>
-
-                                <div class="subtotal">
-                                    Subtotal:
-                                    <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
-                                </div>
+                            <div class="product-price">
+                                Rp {{ number_format($item['harga'], 0, ',', '.') }}
                             </div>
-                        </article>
+
+                            <span class="quantity-info">
+                                <i class="fa-solid fa-box"></i>
+                                Jumlah: {{ $item['jumlah'] }}
+                            </span>
+
+                            <div class="subtotal">
+                                Subtotal:
+                                <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
+                            </div>
+                        </div>
+                    </article>
                     @endforeach
                 </div>
             </section>
@@ -556,13 +581,24 @@
                     Total dihitung berdasarkan harga dan jumlah produk pilihanmu.
                 </p>
 
-                <a href="{{ route('user.dashboard') }}" class="btn-green">
+                <!-- TOMBOL CHECKOUT DITARUH DI SINI -->
+                <!-- GANTI TOMBOL CHECKOUT DENGAN FORM INI -->
+                <form action="{{ route('user.checkout.index') }}" method="GET" id="checkoutForm">
+                    <input type="hidden" name="items" id="selectedItemsInput">
+                    <button type="submit" class="btn-green mb-2 w-100" id="btnCheckout" style="background-color: var(--green); color: white; border: none;">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        Lanjut ke Checkout
+                    </button>
+                </form>
+
+                <!-- Tombol Tambah Produk Lain (Opsional) -->
+                <a href="{{ route('user.dashboard') }}" class="btn-green" style="background-color: white; color: var(--green); border: 1px solid var(--green);">
                     <i class="fa-solid fa-plus"></i>
                     Tambah Produk Lain
                 </a>
             </aside>
         </div>
-    @else
+        @else
         <section class="empty-card">
             <div class="empty-icon">
                 <i class="fa-solid fa-cart-shopping"></i>
@@ -576,8 +612,76 @@
                 Mulai Belanja
             </a>
         </section>
-    @endif
-</main>
+        @endif
+    </main>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectAll = document.getElementById('selectAll');
+        const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+        const totalPriceEl = document.querySelector('.total-price');
+        const summaryJumlahEl = document.querySelectorAll('.summary-row strong')[0]; // Angka jumlah barang
+        const summaryJenisEl = document.querySelectorAll('.summary-row strong')[1]; // Angka jenis produk
+        const checkoutForm = document.getElementById('checkoutForm');
+        const selectedItemsInput = document.getElementById('selectedItemsInput');
+
+        function formatRupiah(angka) {
+            return 'Rp ' + angka.toLocaleString('id-ID');
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            let totalQty = 0;
+            let selectedIds = [];
+
+            itemCheckboxes.forEach(cb => {
+                if (cb.checked) {
+                    let harga = parseInt(cb.getAttribute('data-harga'));
+                    let jumlah = parseInt(cb.getAttribute('data-jumlah'));
+                    total += harga * jumlah;
+                    totalQty += jumlah;
+                    selectedIds.push(cb.value);
+                }
+            });
+
+            // Update angka di tampilan
+            totalPriceEl.innerText = formatRupiah(total);
+            summaryJumlahEl.innerText = totalQty;
+            summaryJenisEl.innerText = selectedIds.length;
+            
+            // Masukkan ID produk yang dipilih ke dalam form
+            selectedItemsInput.value = selectedIds.join(',');
+
+            // Jika tidak ada yang dipilih, matikan tombol checkout
+            if (selectedIds.length === 0) {
+                document.getElementById('btnCheckout').disabled = true;
+                document.getElementById('btnCheckout').style.opacity = '0.5';
+            } else {
+                document.getElementById('btnCheckout').disabled = false;
+                document.getElementById('btnCheckout').style.opacity = '1';
+            }
+        }
+
+        // Event listener saat checkbox berubah
+        itemCheckboxes.forEach(cb => {
+            cb.addEventListener('change', calculateTotal);
+        });
+
+        // Event listener untuk Pilih Semua
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                itemCheckboxes.forEach(cb => {
+                    cb.checked = this.checked;
+                });
+                calculateTotal();
+            });
+        }
+
+        // Hitung total saat halaman pertama kali dimuat
+        calculateTotal();
+    });
+</script>
 
 </body>
+
 </html>

@@ -1,10 +1,9 @@
-
 <?php
 
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-
 
 // Halaman utama
 Route::get('/', function () {
@@ -53,12 +52,13 @@ Route::prefix('admin')
     });
 
 
-
- // Dashboard user
+// Dashboard user & Keranjang & Checkout
 Route::prefix('user')
     ->name('user.')
     ->middleware(['auth', 'role:user'])
     ->group(function () {
+        
+        // Dashboard User
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
@@ -72,7 +72,21 @@ Route::prefix('user')
             \App\Http\Controllers\User\KeranjangController::class,
             'store'
         ])->name('keranjang.store');
+
+        // chekout
+        Route::get('/checkout', [
+            \App\Http\Controllers\User\CheckoutController::class, 
+            'index'
+        ])->name('checkout.index'); // Namanya jadi user.checkout.index
+
+        Route::post('/checkout', [
+            \App\Http\Controllers\User\CheckoutController::class, 
+            'simpan_pesanan'
+        ])->name('checkout.store'); // Namanya jadi user.checkout.store
+
+
     });
 
+// Detail Produk (Bebas diakses)
 Route::get('/produk/{produk}', [DashboardController::class, 'showProduk'])
     ->name('produk.show');
