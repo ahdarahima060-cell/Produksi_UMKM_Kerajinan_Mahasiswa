@@ -315,6 +315,24 @@
             transform: translateY(-1px);
         }
 
+        .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            color: #dc3545; /* Warna merah */
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0;
+            transition: .2s;
+        }
+
+        .btn-delete:hover {
+            color: #a71d2a;
+            text-decoration: underline;
+        }
+
         .empty-card {
             padding: 65px 25px;
             text-align: center;
@@ -430,7 +448,7 @@
 </head>
 
 <body>
-    <!-- ================= TAMBAHAN HEADER BARU ================= -->
+    <!-- ================= HEADER ================= -->
     <header class="topbar">
         <a href="{{ route('user.dashboard') }}" class="brand">
             <span class="brand-icon">
@@ -451,7 +469,6 @@
             </a>
         </div>
     </header>
-    <!-- ======================================================== -->
 
     <main class="page">
         <div class="page-heading">
@@ -494,7 +511,7 @@
             <section>
                 <h2 class="section-label">Produk pilihanmu</h2>
 
-                <!-- TAMBAHKAN INI -->
+                <!-- CHECKBOX PILIH SEMUA -->
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="selectAll" checked>
                     <label class="form-check-label fw-bold" for="selectAll" style="cursor: pointer;">
@@ -510,7 +527,7 @@
                     @endphp
 
                     <article class="product-card">
-                        <!-- TAMBAHKAN CHECKBOX INI -->
+                        <!-- CHECKBOX ITEM -->
                         <div class="me-2">
                             <input type="checkbox" class="form-check-input item-checkbox"
                                 value="{{ $item['produk_id'] }}"
@@ -518,10 +535,11 @@
                                 data-jumlah="{{ $item['jumlah'] }}"
                                 checked style="width: 20px; height: 20px; cursor: pointer;">
                         </div>
-                        <!-- Sisa kode gambar dan info produk... -->
+                        
+                        <!-- GAMBAR PRODUK -->
                         @if (!empty($item['gambar']))
                         <img
-                            src="{{ asset('storage/' . $item['gambar']) }}"
+                            src="{{ asset('images/products/' . $item['gambar']) }}"
                             alt="{{ $item['nama_produk'] }}"
                             class="product-image">
                         @else
@@ -543,9 +561,20 @@
                                 Jumlah: {{ $item['jumlah'] }}
                             </span>
 
-                            <div class="subtotal">
-                                Subtotal:
-                                <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
+                            <!-- BAGIAN SUBTOTAL & TOMBOL HAPUS -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="subtotal" style="margin-top: 0;">
+                                    Subtotal:
+                                    <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
+                                </div>
+                                
+                                <form action="{{ route('user.keranjang.destroy', $item['produk_id']) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini dari keranjang?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete">
+                                        <i class="fa-solid fa-trash-can"></i> Hapus
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </article>
@@ -581,8 +610,6 @@
                     Total dihitung berdasarkan harga dan jumlah produk pilihanmu.
                 </p>
 
-                <!-- TOMBOL CHECKOUT DITARUH DI SINI -->
-                <!-- GANTI TOMBOL CHECKOUT DENGAN FORM INI -->
                 <form action="{{ route('user.checkout.index') }}" method="GET" id="checkoutForm">
                     <input type="hidden" name="items" id="selectedItemsInput">
                     <button type="submit" class="btn-green mb-2 w-100" id="btnCheckout" style="background-color: var(--green); color: white; border: none;">
@@ -591,7 +618,6 @@
                     </button>
                 </form>
 
-                <!-- Tombol Tambah Produk Lain (Opsional) -->
                 <a href="{{ route('user.dashboard') }}" class="btn-green" style="background-color: white; color: var(--green); border: 1px solid var(--green);">
                     <i class="fa-solid fa-plus"></i>
                     Tambah Produk Lain
@@ -680,7 +706,7 @@
         // Hitung total saat halaman pertama kali dimuat
         calculateTotal();
     });
-</script>
+    </script>
 
 </body>
 

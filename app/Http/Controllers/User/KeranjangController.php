@@ -78,4 +78,15 @@ class KeranjangController extends Controller
             ->route('user.keranjang.index')
             ->with('success', 'Produk berhasil ditambahkan ke keranjang.');
     }
+    
+    public function destroy($id)
+    {
+        // Hapus item dari tabel cart_items berdasarkan produk_id dan user yang sedang login
+        DB::table('cart_items')
+            ->where('user_id', auth()->id())
+            ->where('produk_id', $id)
+            ->delete();
+
+        return redirect()->route('user.keranjang.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
+    }
 }

@@ -147,6 +147,13 @@
             padding: 23px;
             border: 1px solid #e9e9e1;
             border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s; /* Tambahan efek hover */
+        }
+        
+        /* Tambahan agar card bereaksi saat di-hover */
+        a:hover .feature-card {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
 
         .feature-icon {
@@ -230,26 +237,23 @@
 
         <div class="menu-label">MENU UTAMA</div>
 
-        <a href="{{ route('admin.dashboard') }}"
-            class="menu-link active">
+        <a href="{{ route('admin.dashboard') }}" class="menu-link active">
             <i class="fa-solid fa-house"></i>
             Dashboard
         </a>
 
         <div class="menu-label">PENGELOLAAN UMKM</div>
 
-
-        <a href="{{ route('admin.produk.index') }}"
-            class="menu-link">
+        <a href="{{ route('admin.produk.index') }}" class="menu-link">
             <i class="fa-solid fa-box"></i>
             Kelola Produk
         </a>
 
-
-        <div class="menu-link">
+        <!-- PERBAIKAN SIDEBAR: Menggunakan class="menu-link" -->
+        <a href="{{ route('admin.pesanan.index') }}" class="menu-link">
             <i class="fa-solid fa-cart-shopping"></i>
             Proses Pesanan
-        </div>
+        </a>
 
         <a href="{{ route('admin.produksi.index') }}" class="menu-link">
             <i class="fa-solid fa-hammer"></i>
@@ -298,10 +302,9 @@
 
         <div class="row g-3">
 
-
+            <!-- Card Kelola Produk -->
             <div class="col-md-6 col-xl-3">
-                <a href="{{ route('admin.produk.index') }}"
-                    class="text-decoration-none text-dark">
+                <a href="{{ route('admin.produk.index') }}" class="text-decoration-none text-dark">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fa-solid fa-box"></i>
@@ -314,19 +317,22 @@
                 </a>
             </div>
 
-
+            <!-- PERBAIKAN CARD TENGAH: Dibungkus dengan tag <a> -->
             <div class="col-md-6 col-xl-3">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fa-solid fa-cart-shopping"></i>
+                <a href="{{ route('admin.pesanan.index') }}" class="text-decoration-none text-dark">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <h3>Proses Pesanan</h3>
+                        <p>
+                            Melihat dan mengelola pesanan yang masuk dari pembeli.
+                        </p>
                     </div>
-                    <h3>Proses Pesanan</h3>
-                    <p>
-                        Melihat dan mengelola pesanan yang masuk dari pembeli.
-                    </p>
-                </div>
+                </a>
             </div>
 
+            <!-- Card Produksi & Penjualan -->
             <div class="col-md-6 col-xl-3">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -339,6 +345,7 @@
                 </div>
             </div>
 
+            <!-- Card Stok Otomatis -->
             <div class="col-md-6 col-xl-3">
                 <div class="feature-card">
                     <div class="feature-icon">

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -531,7 +530,7 @@
                     <article class="product">
                         <div class="product-image">
                             <img
-                                src="{{ asset('images/products/gantungan-kunci-resin.jpeg') }}"
+                                src="{{ asset('images/products/Gantungan-Kunci-Resin.jpeg') }}"
                                 alt="Gantungan Kunci Resin">
                         </div>
 
@@ -550,7 +549,7 @@
                     <article class="product">
                         <div class="product-image">
                             <img
-                                src="{{ asset('images/products/tote-bag-handmade.jpeg') }}"
+                                src="{{ asset('images/products/Tote-Bag-Handmade.jpeg') }}"
                                 alt="Tote Bag Handmade">
                         </div>
 
@@ -757,21 +756,21 @@
             {
                 name: 'Strap HP Manik-Manik',
                 price: 'Rp15.000',
-                image: @json(asset('images/products/Strap-HP-Manik-Manik.jpg')),
+                image: @json(asset('images/products/Strap-HP-Manik-Manik.jpeg')), // Diperbaiki menjadi .jpeg
                 description: 'Aksesori handmade untuk HP dengan rangkaian manik yang unik dan berwarna.',
                 material: 'Manik-manik, tali penghubung, dan pengait strap.'
             },
             {
                 name: 'Gantungan Kunci Resin',
                 price: 'Rp15.000',
-                image: @json(asset('images/products/gantungan-kunci-resin.png')),
+                image: @json(asset('images/products/Gantungan-Kunci-Resin.jpeg')), // Diperbaiki menjadi .jpeg
                 description: 'Gantungan kunci kreatif dengan hiasan resin yang menarik.',
                 material: 'Resin dan ring gantungan kunci.'
             },
             {
                 name: 'Tote Bag Handmade',
                 price: 'Rp15.000',
-                image: @json(asset('images/products/tote-bag-handmade.jpg')),
+                image: @json(asset('images/products/Tote-Bag-Handmade.jpeg')), // Diperbaiki menjadi .jpeg
                 description: 'Tas handmade yang praktis untuk membawa barang sehari-hari.',
                 material: 'Kain tote bag dan hiasan dekoratif.'
             },

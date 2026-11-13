@@ -220,6 +220,11 @@
             background: var(--green-dark);
             color: white;
         }
+        
+        .btn-green:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
 
         @media (max-width: 900px) {
             .checkout-layout {
@@ -260,14 +265,13 @@
         </div>
     </div>
 
-    <!-- Tampilkan Error Validasi Jika Ada -->
     @if ($errors->any())
         <div class="alert alert-danger mb-4">{{ $errors->first() }}</div>
     @endif
 
-        <form action="{{ route('user.checkout.store') }}" method="POST">
+    <!-- FORM DIMULAI DI SINI DENGAN ID checkoutForm -->
+    <form id="checkoutForm" action="{{ route('user.checkout.store') }}" method="POST">
         @csrf
-        <!-- TAMBAHKAN BARIS INI -->
         <input type="hidden" name="selected_items" value="{{ request('items') }}">
         
         <div class="checkout-layout">
@@ -285,7 +289,7 @@
                 <label class="form-label">Alamat Lengkap</label>
                 <textarea name="alamat_pengiriman" class="form-control" rows="4" required placeholder="Tuliskan nama jalan, RT/RW, kelurahan, kecamatan, kota, dan kode pos">{{ old('alamat_pengiriman') }}</textarea>
 
-                             <h2 class="section-title mt-4">Metode Pembayaran</h2>
+                <h2 class="section-title mt-4">Metode Pembayaran</h2>
                 
                 <div class="d-flex flex-column gap-3">
                     <!-- Opsi 1: Cashless -->
@@ -315,15 +319,11 @@
                     Ringkasan Pesanan
                 </h2>
 
-                <!-- Looping Barang -->
-                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
-                    @foreach($keranjang as $item)
-                                    <!-- Looping Barang -->
+                <!-- Looping Barang (Kode Dobel Sudah Dihapus) -->
                 <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
                     @foreach($keranjang as $item)
                     <div class="summary-row" style="margin-bottom: 10px;">
                         <div>
-                            <!-- UBAH MENJADI SEPERTI INI (Sama seperti di keranjang) -->
                             <span style="color: var(--text); font-weight: 600;">
                                 {{ $item->nama_produk }}
                             </span>
@@ -336,8 +336,6 @@
                     </div>
                     @endforeach
                 </div>
-                    @endforeach
-                </div>
 
                 <hr class="summary-divider">
 
@@ -346,7 +344,7 @@
                     Rp {{ number_format($total_bayar, 0, ',', '.') }}
                 </div>
 
-                <button type="submit" class="btn-green">
+                <button type="submit" class="btn-green" id="btnCheckout">
                     <i class="fa-solid fa-check"></i>
                     Buat Pesanan
                 </button>
@@ -354,6 +352,75 @@
         </div>
     </form>
 </main>
+
+<!-- SCRIPT MIDTRANS & AJAX DITAMBAHKAN DI SINI -->
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Mencegah halaman reload (pindah halaman)
+
+        let form = this;
+        let formData = new FormData(form);
+        let btn = document.getElementById('btnCheckout');
+        
+        // Ubah tampilan tombol menjadi loading
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+
+        // Kirim data form ke Controller via AJAX
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'error') {
+                Swal.fire('Gagal', data.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Buat Pesanan';
+                return;
+            }
+
+            // Jika pembayaran Cashless (Midtrans)
+            if (data.snap_token) {
+                window.snap.pay(data.snap_token, {
+                    onSuccess: function(result){
+                        // Jika sukses, arahkan ke halaman sukses
+                        window.location.href = "{{ url('/user/checkout/sukses') }}/" + data.order_id;
+                    },
+                    onPending: function(result){
+                        // Jika pending (misal belum bayar), tetap arahkan ke halaman sukses
+                        window.location.href = "{{ url('/user/checkout/sukses') }}/" + data.order_id;
+                    },
+                    onError: function(result){
+                        Swal.fire('Gagal', 'Pembayaran gagal! Silakan coba lagi.', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Buat Pesanan';
+                    },
+                    onClose: function(){
+                        // Jika user menutup popup tanpa bayar, biarkan tombol bisa diklik lagi
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Buat Pesanan';
+                    }
+                });
+            } 
+            // Jika pembayaran COD
+            else if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(error => {
+            Swal.fire('Error', 'Terjadi kesalahan sistem.', 'error');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Buat Pesanan';
+        });
+    });
+</script>
 
 </body>
 </html>
