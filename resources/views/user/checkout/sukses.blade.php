@@ -33,7 +33,7 @@
                 @endif
             </p>
         </div>
-        <a href="{{ route('user.dashboard') }}" class="btn btn-green">Lihat Pesanan Saya</a>
+        <a href="{{ route('user.pesanan.index') }}" class="btn btn-green">Lihat Pesanan Saya</a>
     </div>
 </body>
 </html>

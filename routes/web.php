@@ -77,13 +77,18 @@ Route::prefix('user')
         Route::post('/checkout', [\App\Http\Controllers\User\CheckoutController::class, 'simpan_pesanan'])
             ->name('checkout.store');
             
-        // TAMBAHAN BARU: Halaman Pesanan Berhasil
+        // Halaman Pesanan Berhasil
         Route::get('/checkout/sukses/{id}', [\App\Http\Controllers\User\CheckoutController::class, 'sukses'])
             ->name('checkout.sukses');
         
-        // Halaman pembayaran Midtrans (jika masih diperlukan)
+        // Halaman pembayaran Midtrans
         Route::get('/pembayaran/{order}', [\App\Http\Controllers\User\CheckoutController::class, 'halamanPembayaran'])
             ->name('pembayaran');
+
+        // ==========================================
+        // TAMBAHAN BARU: Riwayat Pesanan User (SUDAH DIPINDAHKAN KE DALAM)
+        // ==========================================
+        Route::get('/pesanan-saya', [\App\Http\Controllers\User\PesananController::class, 'index'])->name('pesanan.index');
 
     });
 

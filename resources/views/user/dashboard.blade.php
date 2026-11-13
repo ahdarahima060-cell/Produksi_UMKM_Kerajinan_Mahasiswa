@@ -307,6 +307,11 @@
         </nav>
 
         <div class="nav-user">
+            <!-- TAMBAHAN LINK PESANAN SAYA -->
+            <a href="{{ route('user.pesanan.index') }}" style="text-decoration: none; color: var(--green); font-weight: 600; margin-right: 5px;">
+                <i class="fa-solid fa-receipt"></i> Pesanan Saya
+            </a>
+
             @php $jumlahKeranjang = collect(session('keranjang', []))->sum('jumlah'); @endphp
             <a href="{{ route('user.keranjang.index') }}" class="cart-nav">
                 <i class="fa-solid fa-cart-shopping"></i> <span>Keranjang</span>
@@ -408,17 +413,14 @@
     <!-- MODAL DETAIL PRODUK -->
     <div class="modal" id="productModal" role="dialog" aria-modal="true">
         <div class="modal-card">
-            <!-- Tombol Close diposisikan absolut di pojok kanan atas -->
             <button type="button" class="close-button" onclick="closeProductDetail()">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <!-- Gambar di kiri -->
             <div class="modal-image-wrapper">
                 <img class="modal-image" id="modalImage" src="" alt="" onerror="this.src='https://via.placeholder.com/500x500?text=Gambar+Tidak+Ada';">
             </div>
 
-            <!-- Teks di kanan -->
             <div class="modal-info">
                 <p class="product-category" id="modalCategory"></p>
                 <h2 id="modalName"></h2>
